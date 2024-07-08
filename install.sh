@@ -136,7 +136,7 @@ mybash_and_dotfiles() {
 nvidia() {
     if lspci | grep -i "nvidia" &> /dev/null; then
         print_message "${GREEN}" "NVIDIA GPU detected. Installing NVIDIA drivers..."
-        install_packages "akmod-nvidia" "xorg-x11-drv-nvidia-cuda"
+        install_packages "akmod-nvidia" "xorg-x11-drv-nvidia-cuda" "nvidia-vaapi-driver" "libva-utils" "vdpauinfo" "vulkan"
     else
         print_message "${YELLOW}" "No NVIDIA GPU detected. Skipping NVIDIA driver installation."
     fi
@@ -167,7 +167,7 @@ nvidia
 
 # Adding COPR packages, such as hyprland
 print_message "${GREEN}" "Adding COPR repositories..."
-add_copr_repos "solopasha/hyprland" "alebastr/sway-extras" "atim/starship"
+add_copr_repos "solopasha/hyprland" "atim/starship"
 
 # Install Hyprland Necessary Packages
 print_message "${GREEN}" "Installing Hyprland packages..."
@@ -185,9 +185,9 @@ prompt_for_optional_install "Do you want to enable autologin?" enable_autologin
 enable_autologin() {
     print_message "${GREEN}" "Configuring autologin with Lightdm..."
     sudo cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bak
-    sudo sed -i '/^\[Seat:\*]/a autologin-user=$(whoami)' "/etc/lightdm/lightdm.conf"
-    sudo sed -i '/^\[Seat:\*]/a autologin-user-timeout=0' "/etc/lightdm/lightdm.conf"
-    sudo sed -i '/^\[Seat:\*]/a autologin-session=hyprland' "/etc/lightdm/lightdm.conf"
+    sudo sed -i "/^\[Seat:\*]/a autologin-user=$(whoami)" "/etc/lightdm/lightdm.conf"
+    sudo sed -i "/^\[Seat:\*]/a autologin-user-timeout=0" "/etc/lightdm/lightdm.conf"
+    sudo sed -i "/^\[Seat:\*]/a autologin-session=hyprland" "/etc/lightdm/lightdm.conf"
     sudo systemctl enable lightdm &> /dev/null
     sudo systemctl set-default graphical.target &> /dev/null
 }
@@ -225,7 +225,7 @@ prompt_for_confirmation "Do you want to proceed with optional installations?"
 
 # Install CLI Packages
 print_message "${GREEN}" "Installing CLI packages..."
-install_packages "htop" "neovim" "gh" "autojump" "cmatrix" "hugo" "rclone" "tldr" "tree" "trash-cli" "powertop" "qalculate" "python3-pip" "dbus-glib" "papirus-icon-theme" "wireguard-tools" "libwebp-devel" "jq"
+install_packages "btop" "neovim" "gh" "autojump" "cmatrix" "hugo" "rclone" "tldr" "tree" "trash-cli" "powertop" "qalculate" "python3-pip" "dbus-glib" "papirus-icon-theme-dark" "wireguard-tools" "libwebp-devel" "jq"
 
 # Install GUI packages
 print_message "${GREEN}" "Adding repositories..."
